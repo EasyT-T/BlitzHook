@@ -1,8 +1,5 @@
 #pragma comment(lib, "EasyHook32.lib")
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wcast-function-type-strict"
-
 #include <iosfwd>
 #include <stdint.h>
 

@@ -43,20 +43,9 @@
         <When Condition="'$(RuntimeIdentifier)' == 'win-x86'">
             <ItemGroup>
                 <NativeLibrary Include="$(MSBuildThisFileDirectory)content/EasyHook32.lib" />
-                <NativeLibrary Include="$(MSBuildThisFileDirectory)content/DllMain.obj" />
+                <NativeLibrary Include="$(MSBuildThisFileDirectory)content/Interop.obj" />
                 <LinkerArg Include="/INCLUDE:_DllMain@12" />
             </ItemGroup>
-
         </When>
     </Choose>
-
-    <Target Name="CopyAotArtifacts" AfterTargets="Publish">
-        <PropertyGroup>
-            <DestinationFolder>D:\Users\EasyT_T\Games\SCP Games\SCP - Containment Breach v1.3.11\</DestinationFolder>
-        </PropertyGroup>
-
-        <Copy SourceFiles="$(PublishDir)BlitzHook.dll"
-              DestinationFiles="$(DestinationFolder)d3dxof.dll"
-              SkipUnchangedFiles="false"/>
-    </Target>
 </Project>

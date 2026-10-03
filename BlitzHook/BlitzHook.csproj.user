@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Project>
+    <Target Name="CopyAotArtifacts" AfterTargets="Publish">
+        <PropertyGroup>
+            <DestinationFolder>D:\Users\EasyT_T\Games\SCP Games\SCP - Containment Breach v1.3.11\</DestinationFolder>
+        </PropertyGroup>
+
+        <Copy SourceFiles="$(PublishDir)BlitzHook.dll"
+              DestinationFiles="$(DestinationFolder)d3dxof.dll"
+              SkipUnchangedFiles="false"/>
+    </Target>
+</Project>

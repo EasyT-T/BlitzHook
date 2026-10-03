@@ -14,7 +14,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{159358C2-D66E-450E-8E90-979D95D7E93F}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>DllMain</RootNamespace>
+    <RootNamespace>Interop</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.26100.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -61,6 +61,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -78,6 +79,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -95,4 +97,8 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+
+  <Target Name="CopyObjFiles" AfterTargets="Build">
+    <Copy SourceFiles="$(IntDir)Interop.obj" DestinationFolder="$(SolutionDir)BlitzHook\content\" />
+  </Target>
 </Project>
