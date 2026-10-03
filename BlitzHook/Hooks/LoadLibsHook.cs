@@ -2,7 +2,6 @@
 
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using BlitzHook.Render;
 using EasyHook;
 using unsafe LoadLibsFunc = delegate* unmanaged[Stdcall]<void*, void>;
 

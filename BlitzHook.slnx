@@ -1,3 +1,11 @@
 <Solution>
-  <Project Path="BlitzHook/BlitzHook.csproj" />
+  <Configurations>
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="BlitzHook/BlitzHook.csproj">
+    <Platform Solution="*|x86" Project="x86" />
+  </Project>
+  <Project Path="Interop/Interop.vcxproj">
+    <Platform Project="Win32" />
+  </Project>
 </Solution>

@@ -1,22 +1,28 @@
-﻿namespace BlitzHook.Features;
+﻿namespace BlitzHook.Engine;
 
 using unsafe CreateMeshFunc = delegate* unmanaged[Stdcall]<int, int>;
+using unsafe CreateSurfaceFunc = delegate* unmanaged[Stdcall]<int, int, int>;
 
-public class Mesh : Entity
+public readonly struct Mesh(int handle) : IEntity
 {
-    private static readonly unsafe CreateMeshFunc CreateMesh;
+    private static readonly unsafe CreateMeshFunc CreateMeshFunc;
+    private static readonly unsafe CreateSurfaceFunc CreateSurfaceFunc;
 
     static unsafe Mesh()
     {
-        CreateMesh = (CreateMeshFunc)Linker.Instance.GetSymbol("%CreateMesh%parent=0");
+        CreateMeshFunc = (CreateMeshFunc)Linker.Instance.GetSymbol("%CreateMesh%parent=0");
+        CreateSurfaceFunc = (CreateSurfaceFunc)Linker.Instance.GetSymbol("%CreateSurface%mesh%brush=0");
     }
 
-    internal Mesh(int handle) : base(handle)
+    public int Handle { get; } = handle;
+
+    public static unsafe Mesh Create(IEntity? parent = null)
     {
+        return new Mesh(CreateMeshFunc(parent?.Handle ?? 0));
     }
 
-    public static unsafe Mesh Create(Entity? parent = null)
+    public unsafe Surface CreateSurface(Brush brush)
     {
-        return new Mesh(CreateMesh(parent?.Handle ?? 0));
+        return new Surface(CreateSurfaceFunc(this.Handle, brush.Handle));
     }
 }

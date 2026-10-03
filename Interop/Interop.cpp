@@ -1,5 +1,11 @@
 #pragma comment(lib, "EasyHook32.lib")
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-strict"
+
+#include <iosfwd>
+#include <stdint.h>
+
 #include "include/easyhook.h"
 #include <windows.h>
 
@@ -7,11 +13,16 @@ extern "C" void __stdcall OnDllLoaded();
 
 namespace
 {
+    using runtimeGetRuntimeType = int32_t (__stdcall *)();
+}
+
+namespace
+{
     bool initialized = false;
 
-    int (__stdcall *runtimeGetRuntimeFunc)();
+    runtimeGetRuntimeType runtimeGetRuntimeFunc = nullptr;
 
-    int __stdcall runtimeGetRuntime()
+    int32_t __stdcall runtimeGetRuntime()
     {
         if (!initialized)
         {

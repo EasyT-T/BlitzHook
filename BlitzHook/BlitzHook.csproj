@@ -4,6 +4,59 @@
         <TargetFramework>net10.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <PublishAot>true</PublishAot>
+        <Configurations>Release;Debug</Configurations>
+        <Platforms>x86</Platforms>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="EasyHook" Version="2.7.7097" />
+      <PackageReference Include="ImGui.NET" Version="1.91.0.1" />
+      <PackageReference Include="Vanara.PInvoke.Kernel32" Version="5.0.7" />
+      <PackageReference Include="Vanara.PInvoke.User32" Version="5.0.7" />
+    </ItemGroup>
+
+    <Target Name="RemoveDLLMainObjects" AfterTargets="SetupOSSpecificProps">
+        <PropertyGroup>
+            <MicrosoftDllMain>$(IlcSdkPath)dllmain$(ObjectSuffix)</MicrosoftDllMain>
+            <MicrosoftDllMainGuardCF>$(IlcSdkPath)dllmain.GuardCF$(ObjectSuffix)</MicrosoftDllMainGuardCF>
+            <EnableControlFlowGuard>false</EnableControlFlowGuard>
+        </PropertyGroup>
+
+        <ItemGroup Condition="'$(_targetOS)' == 'win'">
+            <LinkerArg Remove="&quot;$(MicrosoftDllMain)&quot;"/>
+            <LinkerArg Remove="&quot;$(MicrosoftDllMainGuardCF)&quot;"/>
+            <NativeLibrary Remove="$(MicrosoftDllMain)"/>
+            <NativeLibrary Remove="$(MicrosoftDllMainGuardCF)"/>
+        </ItemGroup>
+    </Target>
+
+    <Choose>
+        <When Condition="'$(RuntimeIdentifier)' == 'win-x86'">
+            <ItemGroup>
+                <NativeLibrary Include="$(MSBuildThisFileDirectory)content/EasyHook32.lib" />
+                <NativeLibrary Include="$(MSBuildThisFileDirectory)content/DllMain.obj" />
+                <LinkerArg Include="/INCLUDE:_DllMain@12" />
+            </ItemGroup>
+
+        </When>
+    </Choose>
+
+    <Target Name="CopyAotArtifacts" AfterTargets="Publish">
+        <PropertyGroup>
+            <DestinationFolder>D:\Users\EasyT_T\Games\SCP Games\SCP - Containment Breach v1.3.11\</DestinationFolder>
+        </PropertyGroup>
+
+        <Copy SourceFiles="$(PublishDir)BlitzHook.dll"
+              DestinationFiles="$(DestinationFolder)d3dxof.dll"
+              SkipUnchangedFiles="false"/>
+    </Target>
 </Project>
